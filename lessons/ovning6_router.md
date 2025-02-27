@@ -18,36 +18,53 @@ Att integrera React Router i din applikation genom att skapa två sidor (LoginPa
 ```bash
 npm install react-router-dom
 ```
----
 
 ---
 
 # Steg 2: Skapa LoginPage
 
-- Skapa en fil: `src/pages/LoginPage.tsx`.
-- I LoginPage ska du:
+- Skapa fil: `src/components/LoginPage.tsx`.
+- Importera useNavigate:
+```javascript
+import { useNavigate } from "react-router-dom";
+```
+- Skapa komponenten LoginPage: `const LoginPage = () => {}`
+- Skapa ett handtag till `useNavigate` i komponenten:
+```javascript
+const navigate = useNavigate();
+```
+---
 
-  - Skapa ett `<div>`-element som omsluter två HTML `<input>`-fält:
+- I LoginPage ska du ha följande jsx:
+
+  - Skapa `<div>`-element som omsluter två HTML `<input>`-fält:
     - Ett `<input type="text">` för användarnamn.
     - Ett `<input type="password">` för lösenord.
+    - En knapp för att logga in
   - Så här:
 
     ```html
-    <div>
-      <input type="text" placeholder="Användarnamn" />
-      <input type="password" placeholder="Lösenord" />
-    </div>
+    return (
+      <div>
+        <input type="text" placeholder="Användarnamn" />
+      </div>
+      <div>
+        <input type="password" placeholder="Lösenord" />
+      </div>
+      <button onClick={handleLogin}>Logga in</button>
+    )
     ```
 
-- Lägg till en knapp med en `onClick`-händelse:
+---
 
-  - Knappen ska ha en onClick-funktion som använder React Router's `useNavigate` för att navigera till Dashboard-sidan.
+# Skapa on-click-funktionen handleLogin
+
+- Knappen ska ha en onClick-funktion som använder React Router's `useNavigate` för att navigera till Dashboard-sidan.
 
 ```typescript
 const handleLogin = () => {
-    //navigera till /dashboard med navigate()
-}
-<button onClick={handleLogin}>Logga in</button>
+  navigate("/dashboard");
+};
 
 ```
 
@@ -55,7 +72,7 @@ const handleLogin = () => {
 
 # Steg 3: Skapa Dashboard
 
-- Skapa en fil: `src/pages/Dashboard.tsx`.
+- Skapa en fil: `src/components/Dashboard.tsx`.
 - Dashboard ska innehålla:
 
   - En rubrik, t.ex. `<h1>Dashboard</h1>`.
@@ -63,9 +80,11 @@ const handleLogin = () => {
     - `/movies`
     - `/register-movie`
   - Dessa länkar skapas med React Router's `Link`-komponent, t.ex:
+
   ```typescript
-    <Link to="/movies">Visa filmer</Link>
+  <Link to="/movies">Visa filmer</Link>
   ```
+
   - En logout-knapp (kan vara en enkel knapp utan funktion just nu).
 
 ---
@@ -79,29 +98,25 @@ const handleLogin = () => {
 - Inom `<main>`, definiera dina rutter med `<Routes>`:
   - En route med `path="/"` som renderar LoginPage.
   - En route med `path="/dashboard"` som renderar Dashboard.
-Ex på hur det ser ut på nästa sida:
+    Ex på hur det ser ut på nästa sida:
 
 ---
+
 ```typescript
 const App = () => {
   return (
     <BrowserRouter>
       <div className={`container-fluid ${styles.fullSize}`}>
         //Header här
-
-        <main className="container my-4">
+        <main>
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </main>
-
-       //Footer här
+        //Footer här
       </div>
     </BrowserRouter>
   );
 };
-
 ```
-
-
